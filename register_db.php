@@ -11,6 +11,9 @@ if(isset($_POST["register"])){
     $email = $_POST['email'];
     $confirmpassword = $_POST['c_password']; 
 
+    // กำหนดให้ role เป็น user ตั้งแต่เริ่ม
+    $role = 'user';
+
     // ตรวจสอบว่าชื่อผู้ใช้ถูกกรอกหรือไม่
     if(empty($username)){
         $_SESSION['error'] = 'Please enter your username';
@@ -65,8 +68,8 @@ if(isset($_POST["register"])){
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
     try {
-        $stmt = $pdo->prepare('INSERT INTO user(username, email, password) VALUES(?, ?, ?)');
-        $stmt->execute([$username, $email, $passwordHash]);
+        $stmt = $pdo->prepare('INSERT INTO user(username, email, password, role) VALUES(?, ?, ?)');
+        $stmt->execute([$username, $email, $passwordHash, $role]);
 
         $_SESSION['success'] = 'Registration successful';
         header('location: register.php');
